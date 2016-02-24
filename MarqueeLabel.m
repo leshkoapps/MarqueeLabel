@@ -145,7 +145,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     if (self) {
         [self setupLabel];
         
-        if (self.scrollDuration == 0) {
+        if (fequalzero(self.scrollDuration)) {
             self.scrollDuration = 7.0;
         }
     }
