@@ -144,8 +144,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setupLabel];
-        
-        if (fequalzero(self.scrollDuration)) {
+        if (fabs(self.scrollDuration) < FLT_EPSILON ) {
             self.scrollDuration = 7.0;
         }
     }
@@ -376,7 +375,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             self.repliLayer.instanceTransform = CATransform3DMakeTranslation(-self.awayOffset, 0.0, 0.0);
             
             // Recompute the animation duration
-            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayOffset) / self.rate) : (self.scrollDuration);
+            self.animationDuration = (!(fabs(self.rate) < FLT_EPSILON)) ? ((NSTimeInterval) fabs(self.awayOffset) / self.rate) : (self.scrollDuration);
             
             break;
         }
@@ -387,7 +386,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             self.awayOffset = (expectedLabelSize.width + self.trailingBuffer + self.leadingBuffer) - self.bounds.size.width;
             
             // Calculate animation duration
-            self.animationDuration = (self.rate != 0) ? (NSTimeInterval)fabs(self.awayOffset / self.rate) : (self.scrollDuration);
+            self.animationDuration = (!(fabs(self.rate) < FLT_EPSILON)) ? (NSTimeInterval)fabs(self.awayOffset / self.rate) : (self.scrollDuration);
             
             // Set frame and text
             self.subLabel.frame = self.homeLabelFrame;
@@ -407,7 +406,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             self.awayOffset = self.bounds.size.width - (expectedLabelSize.width + self.leadingBuffer + self.trailingBuffer);
             
             // Calculate animation duration
-            self.animationDuration = (self.rate != 0) ? (NSTimeInterval)fabs(self.awayOffset / self.rate) : (self.scrollDuration);
+            self.animationDuration = (!(fabs(self.rate) < FLT_EPSILON)) ? (NSTimeInterval)fabs(self.awayOffset / self.rate) : (self.scrollDuration);
             
             // Set frame
             self.subLabel.frame = self.homeLabelFrame;
@@ -1210,7 +1209,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 #pragma mark - Custom Getters and Setters
 
 - (void)setRate:(CGFloat)rate {
-    if (_rate == rate) {
+    if (fabs((_rate) - (rate)) < FLT_EPSILON) {
         return;
     }
     
@@ -1220,7 +1219,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setScrollDuration:(CGFloat)lengthOfScroll {
-    if (_scrollDuration == lengthOfScroll) {
+    if (fabs((_scrollDuration) - (lengthOfScroll)) < FLT_EPSILON) {
         return;
     }
     
@@ -1241,7 +1240,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setLeadingBuffer:(CGFloat)leadingBuffer {
-    if (_leadingBuffer == leadingBuffer) {
+    if (fabs((_leadingBuffer) - (leadingBuffer)) < FLT_EPSILON) {
         return;
     }
     
@@ -1251,7 +1250,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setTrailingBuffer:(CGFloat)trailingBuffer {
-    if (_trailingBuffer == trailingBuffer) {
+    if (fabs((_trailingBuffer) - (trailingBuffer)) < FLT_EPSILON) {
         return;
     }
     
@@ -1269,7 +1268,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setFadeLength:(CGFloat)fadeLength {
-    if (_fadeLength == fadeLength) {
+    if (fabs((_fadeLength) - (fadeLength)) < FLT_EPSILON) {
         return;
     }
     
@@ -1334,7 +1333,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     if (!presentationLayer) {
         return NO;
     }
-    return !(presentationLayer.position.x == self.homeLabelFrame.origin.x);
+    return !(fabs((presentationLayer.position.x) - (self.homeLabelFrame.origin.x)) < FLT_EPSILON);
 }
 
 #pragma mark - Support
